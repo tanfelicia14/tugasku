@@ -1,23 +1,17 @@
 {
-  "name": "tugasku-(project)",
+  "name": "tugasku",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-  "dev": "nodemon index.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "dotenv": "^18.0.10",
-    "express": "^5.3.0",
-    "pg": "^8.23.1"
+    "dotenv": "^17.0.0",
+    "express": "^5.0.0",
+    "pg": "^8.0.0"
   },
   "devDependencies": {
-    "dev": "nodemon index.js",
-  "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14"
   }
 }
