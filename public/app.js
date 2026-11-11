@@ -32,11 +32,53 @@ async function loadTugas() {
   }
 }
 
+function renderStats() {
+  document.getElementById('statTotal').textContent = daftarTugas.length;
+  document.getElementById('statUrgent').textContent = daftarTugas.filter((t) => t.urgent).length;
+  document.getElementById('statTerlambat').textContent = daftarTugas.filter((t) => t.terlambat).length;
+  document.getElementById('statSelesai').textContent = daftarTugas.filter((t) => t.status === 'selesai').length;
+}
+
 function render() {
+  renderStats();
+
   if (daftarTugas.length === 0) {
-    daftarEl.innerHTML = '<div class="text-muted text-center py-4">Belum ada tugas. Tambahkan yang pertama!</div>';
+    daftarEl.innerHTML = '<div class="kosong">Belum ada tugas. Tambahkan yang pertama! 🎉</div>';
     return;
   }
+
+  daftarEl.innerHTML = daftarTugas.map((t) => {
+    const selesai = t.status === 'selesai';
+    let kelas = '';
+    let badge = '';
+
+    if (selesai) {
+      kelas = 'selesai';
+      badge = '<span class="badge-status b-selesai">✔ Selesai</span>';
+    } else if (t.terlambat) {
+      kelas = 'terlambat';
+      badge = '<span class="badge-status b-terlambat">Terlambat</span>';
+    } else if (t.urgent) {
+      kelas = 'urgent';
+      badge = '<span class="badge-status b-urgent">🔥 Urgent</span>';
+    }
+
+    return `
+      <div class="tugas ${kelas}">
+        <div>
+          <div class="mk">${escapeHtml(t.mata_kuliah)}</div>
+          <div class="judul">${escapeHtml(t.judul)}</div>
+          <div class="waktu">⏰ ${formatTanggal(t.deadline)} ${badge}</div>
+        </div>
+        <div class="aksi">
+          <button class="btn-aksi ${selesai ? 'btn-batal' : 'btn-selesai'}" onclick="tandaiSelesai(${t.id})">
+            ${selesai ? 'Batalkan' : 'Selesai'}
+          </button>
+          <button class="btn-aksi btn-hapus" onclick="hapusTugas(${t.id})">Hapus</button>
+        </div>
+      </div>`;
+  }).join('');
+}
 
   daftarEl.innerHTML = daftarTugas.map((t) => {
     const selesai = t.status === 'selesai';
@@ -65,7 +107,7 @@ function render() {
         </div>
       </div>`;
   }).join('');
-}
+
 
 // CREATE
 async function tambahTugas() {
